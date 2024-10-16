@@ -45,9 +45,10 @@ jobs:
       - name: Grant execute permission for Maven wrapper
         run: chmod +x ./mvnw
 
-      - name: Deploy to Tomcat
-        run: ./mvnw org.apache.tomcat.maven:tomcat7-maven-plugin:2.2:deploy
-        env:
-          TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME }}
-          TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
-          TOMCAT_URL: ${{ secrets.TOMCAT_URL }}
+      - name: Start Tomcat using Docker
+        run: docker run -d -p 8080:8080 -e TOMCAT_USER=${{ secrets.TOMCAT_USERNAME }} -e TOMCAT_PASSWORD=${{ secrets.TOMCAT_PASSWORD }} tomcat:9.0
+
+      - name: Wait for Tomcat to start
+        run: sleep 20
+
+      - name
