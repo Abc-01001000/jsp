@@ -36,4 +36,4 @@ jobs:
           TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME }}
           TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
         run: |
-          curl -T target/jsp-1.0-SNAPSHOT.war "http://${{ env.TOMCAT_HOST }}/manager/text/deploy?path=/your-app-name&update=true" --user ${{ env.TOMCAT_USERNAME }}:${{ env.TOMCAT_PASSWORD }}
+          curl -T target/jsp-1.0-SNAPSHOT.war "http://${{ env.TOMCAT_HOST }}/manager/text/deploy?path=/jsp-1.0-SNAPSHOT&update=true" --user ${{ env.TOMCAT_USERNAME }}:${{ env.TOMCAT_PASSWORD }}
