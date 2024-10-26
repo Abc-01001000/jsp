@@ -2,23 +2,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+  <title>Blogs</title>
+  <link rel="stylesheet" type="text/css" href="main.css"></link>
 </head>
 <body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
+  <header>
+    <span>Blogs</span>
+
+    <nav>
+      <%-- menu --%>
+    </nav>
+
+    <button>Login</button>
+  </header>
+
+  <main>
+    <jsp:include page="components/blog.jsp" flush="true" />
+  </main>
+
+  <footer></footer>
 </body>
-    <script>
-        window.onload = async () => {
-            const url = "http://localhost:8080/test";
-            const response = await fetch(url);
-            console.log(response);
-
-            const data = await response.json();
-            console.log(data);
-        }
-
-    </script>
 </html>
