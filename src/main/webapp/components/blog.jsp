@@ -8,7 +8,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title>Title</title>
+  <style>
+    li {
+      margin: 3vh;
+      padding: 32px;
+      min-height: 100px;
+
+      border-radius: 10px;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+
+      cursor: pointer;
+    }
+
+    li:hover {
+      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+    }
+  </style>
 </head>
 <body>
   <ul id="blogs"></ul>
@@ -26,8 +41,9 @@
       console.log(data);
 
       data.forEach(item => {
+        // TODO details contents description
         const li = document.createElement('li');
-        li.innerText = item.title;
+        li.innerHTML = '<h1>' + item.id + ' - ' + item.title + '</h1><h2>' + item.author + '</h2>';
         ul.appendChild(li);
       })
     } catch (error) {

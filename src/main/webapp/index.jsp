@@ -10,16 +10,17 @@
     <span>Blogs</span>
 
     <nav>
-      <%-- menu --%>
+      <%-- TODO menu --%>
     </nav>
 
     <button>Login</button>
+    <%-- TODO link login dialog --%>
   </header>
 
   <main>
-    <jsp:include page="components/blog.jsp" flush="true" />
+    <jsp:include page="components/blog.jsp" />
   </main>
 
-  <footer></footer>
+  <footer>&#xa9; Copy Right 1234-5678</footer>
 </body>
 </html>
