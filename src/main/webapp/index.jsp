@@ -13,8 +13,11 @@
       <%-- TODO menu --%>
     </nav>
 
-    <button>Login</button>
-    <%-- TODO link login dialog --%>
+    <% if (session.getAttribute("username")!= null) { %>
+      <span id="user-span">Hello, <%= session.getAttribute("username") %>!</span>
+    <% } else { %>
+      <jsp:include page="components/login.jsp" />
+    <% } %>
   </header>
 
   <main>
@@ -23,4 +26,21 @@
 
   <footer>&#xa9; Copy Right 1234-5678</footer>
 </body>
+  <script>
+    <% if (session.getAttribute("username") != null) { %>
+      const user = document.getElementById('user-span');
+
+      user.addEventListener('click', () => {
+        if (!confirm('logout?')) return;
+        <%
+          session = request.getSession(false);
+
+          if (session!= null) {
+            session.invalidate();
+          }
+        %>
+        location.reload();
+      });
+    <% } %>
+  </script>
 </html>

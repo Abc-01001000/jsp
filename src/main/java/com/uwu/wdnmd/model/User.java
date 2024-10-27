@@ -1,8 +1,9 @@
 package com.uwu.wdnmd.model;
 
 public class User {
-    int id;
-    String name;
-    String email;
-    String pwd;
+    public int user_id;
+    public String username;
+    public String email;
+    public String password;
+    public String role;
 }

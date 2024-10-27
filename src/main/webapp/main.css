@@ -32,22 +32,6 @@ header {
     justify-content: space-between;
     align-items: center;
   }
-
-  button {
-    margin: 0 5vh;
-    padding: 1vh;
-
-    border: #000 solid 1px;
-    border-radius: 5px;
-    background: none;
-    outline: none;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background: #000;
-    color: #eee;
-  }
 }
 
 main {

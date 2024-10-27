@@ -15,7 +15,7 @@ public class DBUtil {
         }
 
         try {
-            String url = "jdbc:mysql://localhost:3306/jsp";
+            String url = "jdbc:mysql://localhost:3306/wdnmd";
             String user = "root";
             String password = "P@ssw0rd";
             connection = DriverManager.getConnection(url, user, password);

@@ -20,15 +20,19 @@ import java.util.ArrayList;
 public class BlogServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try (Connection conn = DBUtil.getConnection()) {
-            try (PreparedStatement ps = conn.prepareStatement("select * from blog")) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM blog")) {
                 try (ResultSet rs = ps.executeQuery()) {
                     ArrayList<Blog> blogs = new ArrayList<>();
                     while (rs.next()) {
                         Blog blog = new Blog();
-                        blog.id = rs.getInt("id");
+                        blog.blog_id = rs.getInt("blog_id");
                         blog.title = rs.getString("title");
+                        blog.description = rs.getString("description");
                         blog.author = rs.getString("author");
-                        blog.path = rs.getString("path");
+                        blog.url = rs.getString("url");
+                        blog.view = rs.getInt("view");
+                        blog.likes = rs.getInt("likes");
+                        blog.star = rs.getInt("star");
                         blogs.add(blog);
                     }
 

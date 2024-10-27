@@ -43,7 +43,8 @@
       data.forEach(item => {
         // TODO details contents description
         const li = document.createElement('li');
-        li.innerHTML = '<h1>' + item.id + ' - ' + item.title + '</h1><h2>' + item.author + '</h2>';
+        let s = '<h1>' + item.blog_id + ' - ' + item.title + '</h1><h2>' + item.author + '</h2>';
+        li.innerHTML = s;
         ul.appendChild(li);
       })
     } catch (error) {
