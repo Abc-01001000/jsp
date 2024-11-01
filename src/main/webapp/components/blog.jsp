@@ -8,37 +8,48 @@
 <%@ page import="com.uwu.wdnmd.model.Blog" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-  <style>
 
-  </style>
-</head>
-<body>
+<style>
+  li {
+    margin: 3vh;
+    padding: 32px;
+    min-height: 100px;
 
-</body>
-<script>
-  // window.onload = async () => {
-  //   const ul = document.getElementById('blogs');
-  //
-  //   try {
-  //     const url = "blog-servlet";
-  //     const response = await fetch(url);
-  //     console.log(response);
-  //
-  //     const data = await response.json();
-  //     console.log(data);
-  //
-  //     data.forEach(item => {
-  //       // TODO details contents description
-  //       const li = document.createElement('li');
-  //       let s = '<h1>' + item.blog_id + ' - ' + item.title + '</h1><h2>' + item.author + '</h2>';
-  //       li.innerHTML = s;
-  //       ul.appendChild(li);
-  //     })
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-</script>
-</html>
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+
+    cursor: pointer;
+  }
+
+  li:hover {
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+  }
+</style>
+
+
+<ul id="blogs">
+  <%
+
+    // 获取 request 属性中的 blogs 列表
+    ArrayList<Blog> blogs = (ArrayList<Blog>) request.getAttribute("blogs");
+    if (blogs != null) {
+      for (Blog blog : blogs) {
+  %>
+  <li>
+    <h3><%= blog.blog_id %></h3>
+    <h3><%= blog.title %></h3>
+    <p>Author: <%= blog.author %></p>
+    <p><%= blog.description %></p>
+    <p><a href="<%= blog.url %>">Read more</a></p>
+    <p>Views: <%= blog.view %>, Likes: <%= blog.likes %>, Stars: <%= blog.star %></p>
+  </li>
+  <%
+    }
+  } else {
+  %>
+  <li>No blogs available.</li>
+  <%
+    }
+  %>
+</ul>
+

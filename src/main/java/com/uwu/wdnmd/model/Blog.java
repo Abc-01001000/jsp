@@ -9,4 +9,6 @@ public class Blog {
     public int view;
     public int likes;
     public int star;
+
+
 }

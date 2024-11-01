@@ -2,6 +2,7 @@ package com.uwu.wdnmd.framework;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uwu.wdnmd.controller.UserController;
 import com.uwu.wdnmd.model.Blog;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -30,7 +31,7 @@ public class DispatcherServlet extends HttpServlet {
 	private Map<String, PostDispatcher> postMappings = new HashMap<>();
 
 	// TODO: 可指定package并自动扫描:
-	private List<Class<?>> controllers = List.of(IndexController.class);
+	private List<Class<?>> controllers = List.of(IndexController.class, UserController.class);
 
 	private ViewEngine viewEngine;
 
@@ -123,13 +124,16 @@ public class DispatcherServlet extends HttpServlet {
 		} catch (ReflectiveOperationException e) {
 			throw new ServletException(e);
 		}
+
 		if (mv == null) {
 			return;
 		}
+
 		if (mv.view.startsWith("redirect:")) {
 			resp.sendRedirect(mv.view.substring(9));
 			return;
 		}
+
 		if (mv.view.startsWith("forward:")) {
 			for (String key : mv.model.keySet()) {
 				req.setAttribute(key, mv.model.get(key));
@@ -137,6 +141,7 @@ public class DispatcherServlet extends HttpServlet {
 			req.getRequestDispatcher(mv.view.substring(8)).forward(req, resp);
 			return;
 		}
+
 		PrintWriter pw = resp.getWriter();
 		this.viewEngine.render(mv, pw);
 		pw.flush();
