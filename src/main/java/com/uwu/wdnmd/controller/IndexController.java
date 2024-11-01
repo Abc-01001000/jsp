@@ -4,6 +4,7 @@ import com.uwu.wdnmd.framework.Controller;
 import com.uwu.wdnmd.framework.GetMapping;
 import com.uwu.wdnmd.framework.ModelAndView;
 import com.uwu.wdnmd.util.DBUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import com.uwu.wdnmd.model.Blog;
@@ -46,5 +47,13 @@ public class IndexController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/logout")
+    public ModelAndView logout(HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        session.invalidate();
+
+        return new ModelAndView("redirect:view/index.jsp");
     }
 }

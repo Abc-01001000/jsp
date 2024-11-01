@@ -88,7 +88,7 @@
     </nav>
 
     <% if (session.getAttribute("username")!= null) { %>
-      <span id="user-span">Hello, <%= session.getAttribute("username") %>!</span>
+      <span onclick="logout()" id="user-span">Hello, <%= session.getAttribute("username") %>!</span>
     <% } else { %>
       <jsp:include page="../components/login.jsp" />
     <% } %>
@@ -113,8 +113,8 @@
       <p>Views: <%= blog.view %>, Likes: <%= blog.likes %>, Stars: <%= blog.star %></p>
     </li>
     <%
-      }
-    } else {
+        }
+      } else {
     %>
     <li>No blogs available.</li>
     <%
@@ -125,32 +125,9 @@
 
   <footer>&#xa9; Copy Right 1234-5678</footer>
 </body>
-<%--  <script>--%>
-<%--    const user = document.getElementById('user-span');--%>
-<%--    const username = sessionStorage.getItem('username');--%>
-<%--    const password = sessionStorage.getItem('password');--%>
-<%--    const role = sessionStorage.getItem('role');--%>
-
-<%--    async function toManager() {--%>
-<%--        const response = await fetch('http://localhost:8080/login-servlet', {--%>
-<%--            method: 'POST',--%>
-<%--            headers: {--%>
-<%--                'Content-Type': 'application/json'--%>
-<%--            },--%>
-<%--            body: JSON.stringify({--%>
-<%--                'username': username,--%>
-<%--                'password': password--%>
-<%--            })--%>
-<%--        });--%>
-<%--    }--%>
-
-<%--    user.addEventListener('click', () => {--%>
-<%--      if (role === 'admin') {--%>
-<%--        toManager();--%>
-<%--      } else if (username != null && confirm('Logout?')) {--%>
-<%--        sessionStorage.clear();--%>
-<%--      }--%>
-<%--      location.reload();--%>
-<%--    });--%>
-<%--  </script>--%>
+  <script>
+    const logout = () => {
+        window.location.href = '/logout';
+    }
+  </script>
 </html>
