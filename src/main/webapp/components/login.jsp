@@ -119,16 +119,16 @@
       <div class="inputs">
         <div class="username-div">
           <label for="r-username">Username:</label>
-          <input type="text" name="r-username" id="r-username" />
+          <input type="text" name="username" id="r-username" />
         </div>
         <div class="password-div">
           <label for="r-password">Password:</label>
-          <input type="password" name="r-password" id="r-password" />
+          <input type="password" name="password" id="r-password" />
         </div>
-        <div class="password-div">
-          <label for="cr-password">Confirm:</label>
-          <input type="password" name="cr-password" id="cr-password" />
-        </div>
+<%--        <div class="password-div">--%>
+<%--          <label for="cr-password">Confirm:</label>--%>
+<%--          <input type="password" name="cr-password" id="cr-password" />--%>
+<%--        </div>--%>
         <div class="email-div">
           <label for="email">Email:</label>
           <input type="email" name="email" id="email" />

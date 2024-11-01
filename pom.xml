@@ -15,6 +15,7 @@
         <maven.compiler.target>23</maven.compiler.target>
         <maven.compiler.source>23</maven.compiler.source>
         <junit.version>5.11.0-M2</junit.version>
+        <pebble.version>3.1.6</pebble.version>
     </properties>
 
     <dependencies>
@@ -52,6 +53,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>io.pebbletemplates</groupId>
+            <artifactId>pebble</artifactId>
+            <version>${pebble.version}</version>
+        </dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
@@ -68,6 +74,20 @@
             <artifactId>HikariCP</artifactId>
             <version>6.0.0</version>
         </dependency>
+        <!-- JSTL API -->
+        <!-- https://mvnrepository.com/artifact/jakarta.servlet.jsp.jstl/jakarta.servlet.jsp.jstl-api -->
+        <dependency>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+<!--        &lt;!&ndash; 实现库 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.glassfish.web</groupId>-->
+<!--            <artifactId>jakarta.servlet.jsp.jstl</artifactId>-->
+<!--            <version>3.0.2</version>-->
+<!--        </dependency>-->
+
     </dependencies>
 
     <build>
