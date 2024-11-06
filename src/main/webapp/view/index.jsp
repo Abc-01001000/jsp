@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Blogs</title>
+  <title>BlogHub</title>
   <style>
     * {
       margin: 0;
@@ -27,6 +27,22 @@
 
       background: #eee;
       box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+
+      #backBtn {
+        padding: 0 5px;
+
+        border-radius: 5px;
+        border: none;
+
+        font-weight: bold;
+        font-size: x-large;
+        cursor: pointer;
+      }
+
+      #backBtn:hover {
+        color: white;
+        background: black;
+      }
 
       span {
         margin: 0 5vh;
@@ -66,48 +82,61 @@
 </head>
 <body>
   <header>
-    <span>Blogs</span>
+    <%
+      String currentContent = (String) request.getAttribute("main");
+      currentContent = currentContent == null ? "Blog" : currentContent;
+    %>
+    <span>
+      <% if (!currentContent.equals("Blog")) { %>
+        <button id="backBtn" onclick="back()">&lt;</button>
+      <% } %>
+      <%= currentContent %>
+    </span>
 
     <nav>
       <%-- TODO menu --%>
     </nav>
-
     <% if (session.getAttribute("username")!= null) { %>
-      <span onclick="toProfile()" id="user-span">Hello, <%= session.getAttribute("username") %>!</span>
+      <span onclick="toProfile()" id="user-span">
+        <%= currentContent.equals("Profile") ? "" : "Hi, " + session.getAttribute("username") + "!" %>
+      </span>
     <% } else { %>
       <jsp:include page="../components/login.jsp" />
     <% } %>
   </header>
 
   <main>
-    <jsp:include page="../components/blog.jsp" />
+    <%
+      switch (currentContent) {
+        case "Blog" -> {
+    %>
+          <jsp:include page="../components/blog.jsp"/>
+    <%
+        } case "Content" -> {
+    %>
+          <jsp:include page="../components/blogPage.jsp"/>
+    <%
+        } case "Profile" -> {
+    %>
+          <jsp:include page="../components/profile.jsp"/>
+    <%
+        } case "Manage" -> {
+    %>
+          <jsp:include page="../components/manage.jsp"/>
+    <%
+        }
+      } %>
   </main>
 
   <footer>&#xa9; Copy Right 1234-5678</footer>
 </body>
   <script>
-    async function toProfile() {
-      try {
-        const response = await fetch('/profile', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            username: sessionStorage.getItem('username'),
-            password: sessionStorage.getItem('password'),
-          }),
-          credentials: 'include'
-        });
+    function back() {
+      window.history.back();
+    }
 
-        if (response.ok) {
-          console.log(response);
-        } else {
-          window.location.href = '/';
-        }
-      } catch (err) {
-        console.log(err);
-      }
+    async function toProfile() {
+      window.location.href = "/profile";
     }
 
     function logout() {

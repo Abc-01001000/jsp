@@ -188,15 +188,15 @@
   });
 
   async function checkUsername(e) {
+    const username = e.value;
+
+    if (username.length === 0) {
+      rUsernameDiv.setAttribute('class', 'username-div');
+      checkUsernameSpan.textContent = '';
+      return;
+    }
+
     try {
-      const username = e.value;
-
-      if (username.length === 0) {
-        rUsernameDiv.setAttribute('class', 'username-div');
-        checkUsernameSpan.textContent = '';
-        return;
-      }
-
       const response = await fetch('/check-username', {
         method: 'POST',
         headers: {
@@ -209,11 +209,11 @@
       });
 
       if (!response.ok) {
+        console.error(response.status);
         return;
       }
 
       const data = await response.json();
-      console.log(data);
 
       if (data.exists) {
         registerButton.disabled = true;

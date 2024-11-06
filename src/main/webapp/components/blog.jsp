@@ -26,30 +26,32 @@
   }
 </style>
 
-
 <ul id="blogs">
   <%
-
-    // 获取 request 属性中的 blogs 列表
     ArrayList<Blog> blogs = (ArrayList<Blog>) request.getAttribute("blogs");
     if (blogs != null) {
       for (Blog blog : blogs) {
+        String url = blog.url;
   %>
-  <li>
-    <h3><%= blog.blog_id %></h3>
-    <h3><%= blog.title %></h3>
-    <p>Author: <%= blog.author %></p>
-    <p><%= blog.description %></p>
-    <p><a href="<%= blog.url %>">Read more</a></p>
-    <p>Views: <%= blog.view %>, Likes: <%= blog.likes %>, Stars: <%= blog.star %></p>
-  </li>
+        <li id="<%= blog.blog_id %>">
+          <h3><%= blog.blog_id %></h3>
+          <h3><%= blog.title %></h3>
+          <p>Author: <%= blog.author %></p>
+          <p><%= blog.description %></p>
+          <p><a href="/blog-content?url=<%= blog.url %>">Read more</a></p>
+          <p>Views: <%= blog.view %>, Likes: <%= blog.likes %>, Stars: <%= blog.star %></p>
+        </li>
   <%
-    }
-  } else {
+      }
+    } else {
   %>
-  <li>No blogs available.</li>
-  <%
-    }
-  %>
+      <li>No blogs available.</li>
+  <% } %>
 </ul>
+
+<script>
+  async function showBlog(blogUrl) {
+    window.local.href = "/blog-content?url=" + blogUrl;
+  }
+</script>
 

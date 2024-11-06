@@ -2,8 +2,8 @@ package com.uwu.wdnmd.framework;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.uwu.wdnmd.controller.UserController;
-import com.uwu.wdnmd.model.Blog;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -112,12 +112,14 @@ public class DispatcherServlet extends HttpServlet {
 			Map<String, ? extends AbstractDispatcher> dispatcherMap) throws ServletException, IOException {
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
+
 		String path = req.getRequestURI().substring(req.getContextPath().length());
 		AbstractDispatcher dispatcher = dispatcherMap.get(path);
 		if (dispatcher == null) {
 			resp.sendError(404);
 			return;
 		}
+
 		ModelAndView mv = null;
 		try {
 			mv = dispatcher.invoke(req, resp);
@@ -130,7 +132,16 @@ public class DispatcherServlet extends HttpServlet {
 		}
 
 		if (mv.view.startsWith("redirect:")) {
-			resp.sendRedirect(mv.view.substring(9));
+			HttpSession session;
+			session = req.getSession();
+			for (String key : mv.model.keySet()) {
+				session.setAttribute(key, mv.model.get(key));
+			}
+
+			String to = mv.view.substring("redirect:".length());
+			if (!path.equals(to))
+				resp.sendRedirect(mv.view.substring("redirect:".length()));
+
 			return;
 		}
 
@@ -138,7 +149,22 @@ public class DispatcherServlet extends HttpServlet {
 			for (String key : mv.model.keySet()) {
 				req.setAttribute(key, mv.model.get(key));
 			}
-			req.getRequestDispatcher(mv.view.substring(8)).forward(req, resp);
+
+			String to = mv.view.substring("forward:".length());
+			if (!path.equals(to))
+				req.getRequestDispatcher(mv.view.substring("forward:".length())).forward(req, resp);
+
+			return;
+		}
+
+		if (mv.view.startsWith("json")) {
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+
+			PrintWriter pw = resp.getWriter();
+			pw.write(new Gson().toJson(mv.model));
+			pw.flush();
+
 			return;
 		}
 

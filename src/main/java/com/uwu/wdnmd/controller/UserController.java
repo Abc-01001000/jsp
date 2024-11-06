@@ -2,6 +2,7 @@ package com.uwu.wdnmd.controller;
 
 import com.google.gson.Gson;
 import com.uwu.wdnmd.dao.UserDao;
+import com.uwu.wdnmd.framework.Controller;
 import com.uwu.wdnmd.framework.GetMapping;
 import com.uwu.wdnmd.framework.ModelAndView;
 import com.uwu.wdnmd.framework.PostMapping;
@@ -11,9 +12,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
+@Controller
 public class UserController {
 
     @PostMapping("/login")
@@ -25,10 +28,12 @@ public class UserController {
         if (user == null) {
             return new ModelAndView("forward:view/error.jsp", "error", "Invalid username or password");
         }
-        HttpSession session = req.getSession();
-        session.setAttribute("username", user.username);
-        session.setAttribute("password", user.password);
-        return new ModelAndView("redirect:/");
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("username", user.username);
+        model.put("password", user.password);
+
+        return new ModelAndView("redirect:/", model);
     }
 
     @GetMapping("/logout")
@@ -40,10 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/check-username")
-    public void checkUsername(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        res.setContentType("application/json");
-        res.setCharacterEncoding("UTF-8");
-
+    public ModelAndView checkUsername(HttpServletRequest req, HttpServletResponse res) throws IOException {
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = req.getReader().readLine()) != null) {
@@ -57,9 +59,10 @@ public class UserController {
             exists = true;
         }
 
-        PrintWriter out = res.getWriter();
-        out.write(new Gson().toJson(new OutputData(exists)));
-        out.flush();
+        Map<String, Object> model = new HashMap<>();
+        model.put("exists", exists);
+
+        return new ModelAndView("json", model);
     }
 
     @PostMapping("/register")
@@ -74,10 +77,11 @@ public class UserController {
         user.email = email;
 
         if (UserDao.addUser(user)) {
-            HttpSession session = req.getSession();
-            session.setAttribute("username", user.username);
-            session.setAttribute("password", user.password);
-            return new ModelAndView("redirect:/");
+            Map<String, Object> model = new HashMap<>();
+            model.put("username", user.username);
+            model.put("password", user.password);
+
+            return new ModelAndView("redirect:/", model);
         } else {
             return new ModelAndView("forward:view/error.jsp", "error", "User creation failed");
         }
@@ -85,13 +89,5 @@ public class UserController {
 
     private static class InputData {
         public String username;
-    }
-
-    private static class OutputData {
-        public boolean exists;
-
-        OutputData(boolean exists) {
-            this.exists = exists;
-        }
     }
 }

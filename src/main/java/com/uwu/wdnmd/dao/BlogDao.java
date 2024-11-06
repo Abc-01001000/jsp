@@ -38,4 +38,13 @@ public class BlogDao {
         }
     }
 
+    public static Blog getBlog(int blog_id) {
+        for (Blog blog : blogs) {
+            if (blog.blog_id == blog_id) {
+                return blog;
+            }
+        }
+
+        return null;
+    }
 }
