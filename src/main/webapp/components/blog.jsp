@@ -9,49 +9,45 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<style>
-  li {
-    margin: 3vh;
-    padding: 32px;
-    min-height: 100px;
-
-    border-radius: 10px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-
-    cursor: pointer;
-  }
-
-  li:hover {
-    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
-  }
-</style>
-
 <ul id="blogs">
   <%
     ArrayList<Blog> blogs = (ArrayList<Blog>) request.getAttribute("blogs");
-    if (blogs != null) {
+    if (blogs != null && !blogs.isEmpty()) {
       for (Blog blog : blogs) {
-        String url = blog.url;
   %>
-        <li id="<%= blog.blog_id %>">
-          <h3><%= blog.blog_id %></h3>
-          <h3><%= blog.title %></h3>
-          <p>Author: <%= blog.author %></p>
-          <p><%= blog.description %></p>
-          <p><a href="/blog-content?url=<%= blog.url %>">Read more</a></p>
-          <p>Views: <%= blog.view %>, Likes: <%= blog.likes %>, Stars: <%= blog.star %></p>
+        <li class="flex justify-around items-center">
+          <div class="m-6 p-3 w-4/5 rounded-lg shadow-lg hover:shadow-xl hover:cursor-pointer" onclick="doSomething('<%= blog.blog_id %>')">
+            <h3><%= blog.blog_id %></h3>
+            <h3><%= blog.title %></h3>
+            <% if (!((String) request.getAttribute("main")).equals("Profile")) { %>
+              <p>Author: <%= blog.author %></p>
+            <% } %>
+            <p><%= blog.description %></p>
+            <p>Views: <%= blog.view %>, Likes: <%= blog.likes %>, Stars: <%= blog.star %></p>
+          </div>
+          <% if (request.getAttribute("main").equals("Manage")) { %>
+            <div class="flex justify-around w-1/5">
+              <button class="red-btn" onclick="doDelete('<%= blog.blog_id %>')">&#x2192;</button>
+            </div>
+          <% } %>
         </li>
   <%
       }
     } else {
   %>
-      <li>No blogs available.</li>
+      <span>No blogs available.</span>
   <% } %>
 </ul>
 
 <script>
-  async function showBlog(blogUrl) {
-    window.local.href = "/blog-content?url=" + blogUrl;
+  function doSomething(id) {
+    window.location.href = "/blog-content?blogId=" + id;
+  }
+
+  function doDelete(id) {
+    if (!confirm('Are you sure?'))
+      return;
+    window.location.href = '/blog-delete?blogId=' + id;
   }
 </script>
 

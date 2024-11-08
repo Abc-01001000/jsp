@@ -3,7 +3,9 @@ package com.uwu.wdnmd.framework;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.uwu.wdnmd.controller.ManageController;
 import com.uwu.wdnmd.controller.UserController;
+import com.uwu.wdnmd.util.DatabaseConnectionPool;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -31,7 +33,7 @@ public class DispatcherServlet extends HttpServlet {
 	private Map<String, PostDispatcher> postMappings = new HashMap<>();
 
 	// TODO: 可指定package并自动扫描:
-	private List<Class<?>> controllers = List.of(IndexController.class, UserController.class);
+	private List<Class<?>> controllers = List.of(IndexController.class, UserController.class, ManageController.class);
 
 	private ViewEngine viewEngine;
 
@@ -41,6 +43,7 @@ public class DispatcherServlet extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		logger.info("init {}...", getClass().getSimpleName());
+		DatabaseConnectionPool.setConnection();
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		// 依次处理每个Controller:

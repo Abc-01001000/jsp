@@ -26,12 +26,17 @@ public class UserController {
 
         User user = UserDao.getUser(username, password);
         if (user == null) {
-            return new ModelAndView("forward:view/error.jsp", "error", "Invalid username or password");
+            Map<String, Object> model = new HashMap<>();
+            model.put("error", "Invalid username or password");
+            model.put("main", "Error");
+            return new ModelAndView("forward:view/index.jsp", model);
         }
 
         Map<String, Object> model = new HashMap<>();
+        model.put("user_id", user.user_id);
         model.put("username", user.username);
         model.put("password", user.password);
+        model.put("main", "Blog");
 
         return new ModelAndView("redirect:/", model);
     }
@@ -45,7 +50,7 @@ public class UserController {
     }
 
     @PostMapping("/check-username")
-    public ModelAndView checkUsername(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    public ModelAndView checkUsername(HttpServletRequest req) throws IOException {
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = req.getReader().readLine()) != null) {
@@ -78,12 +83,15 @@ public class UserController {
 
         if (UserDao.addUser(user)) {
             Map<String, Object> model = new HashMap<>();
-            model.put("username", user.username);
-            model.put("password", user.password);
+            model.put("username", username);
+            model.put("password", password);
 
-            return new ModelAndView("redirect:/", model);
+            return new ModelAndView("forward:/login", model);
         } else {
-            return new ModelAndView("forward:view/error.jsp", "error", "User creation failed");
+            Map<String, Object> model = new HashMap<>();
+            model.put("error", "username already exists");
+            model.put("main", "Error");
+            return new ModelAndView("forward:view/index.jsp", model);
         }
     }
 

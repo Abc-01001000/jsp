@@ -2,93 +2,20 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>BlogHub</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      text-decoration: none;
-      list-style: none;
-    }
-
-    header {
-      position: fixed;
-      top: 0;
-      z-index: 10;
-
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      width: 100%;
-      height: 10vh;
-
-      background: #eee;
-      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-
-      #backBtn {
-        padding: 0 5px;
-
-        border-radius: 5px;
-        border: none;
-
-        font-weight: bold;
-        font-size: x-large;
-        cursor: pointer;
-      }
-
-      #backBtn:hover {
-        color: white;
-        background: black;
-      }
-
-      span {
-        margin: 0 5vh;
-
-        font-weight: bold;
-        font-size: x-large;
-      }
-
-      nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-
-    main {
-      position: relative;
-      top: 10vh;
-
-      width: 80%;
-      margin: 5vh auto;
-      margin-bottom: 15vh;
-    }
-
-    footer {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-
-      width: 100%;
-      height: 10vh;
-
-      background: #eee;
-      color: #666;
-    }
-  </style>
+  <link href="/static/output.css" rel="stylesheet">
 </head>
 <body>
-  <header>
+  <header class="fixed top-0 z-index:10 flex justify-between align-items-center px-10 h-16 w-full shadow bg-gray-50 z-10">
     <%
       String currentContent = (String) request.getAttribute("main");
-      currentContent = currentContent == null ? "Blog" : currentContent;
+      if (currentContent == null) currentContent = "Blog";
     %>
-    <span>
+    <span class="flex items-center text-2xl font-bold">
       <% if (!currentContent.equals("Blog")) { %>
-        <button id="backBtn" onclick="back()">&lt;</button>
+        <button class="rounded-lg py-1 px-2 hover:bg-black hover:text-white" id="back-btn" onclick="back()">&lt;</button>
       <% } %>
       <%= currentContent %>
     </span>
@@ -96,16 +23,27 @@
     <nav>
       <%-- TODO menu --%>
     </nav>
-    <% if (session.getAttribute("username")!= null) { %>
-      <span onclick="toProfile()" id="user-span">
-        <%= currentContent.equals("Profile") ? "" : "Hi, " + session.getAttribute("username") + "!" %>
-      </span>
-    <% } else { %>
-      <jsp:include page="../components/login.jsp" />
-    <% } %>
+
+    <span class="flex items-center">
+      <%
+        if (session.getAttribute("username") != null) {
+          if (currentContent.equals("Profile") || currentContent.equals("Manage")) {
+      %>
+            <button class="red-btn" onclick="logout()">Logout</button>
+      <%  } else { %>
+            <span class="flex items-center py-1 px-2 rounded-lg text-2xl font-bold hover:bg-black hover:text-white hover:cursor-pointer" onclick="toProfile()">
+              <%= "Hi, " + session.getAttribute("username") + "!" %>
+            </span>
+      <%
+        }
+      } else {
+      %>
+          <jsp:include page="../components/login.jsp" />
+      <% } %>
+    </span>
   </header>
 
-  <main>
+  <main class="relative top-20 mx-auto w-3/4">
     <%
       switch (currentContent) {
         case "Blog" -> {
@@ -114,29 +52,35 @@
     <%
         } case "Content" -> {
     %>
-          <jsp:include page="../components/blogPage.jsp"/>
+          <jsp:include page="blogPage.jsp"/>
     <%
         } case "Profile" -> {
     %>
-          <jsp:include page="../components/profile.jsp"/>
+          <jsp:include page="profile.jsp"/>
     <%
         } case "Manage" -> {
     %>
-          <jsp:include page="../components/manage.jsp"/>
+          <jsp:include page="manage.jsp"/>
+    <%
+        } case "Error" -> {
+    %>
+          <jsp:include page="error.jsp"/>
     <%
         }
-      } %>
+      }
+    %>
   </main>
 
-  <footer>&#xa9; Copy Right 1234-5678</footer>
+  <footer class="flex justify-around items-center mt-24 h-16 bg-gray-200 text-gray-700">&#xa9; Copy Right 1234-5678</footer>
 </body>
   <script>
     function back() {
       window.history.back();
     }
 
-    async function toProfile() {
-      window.location.href = "/profile";
+    function toProfile() {
+      console.log("<%= session.getAttribute("user_id") %>")
+      window.location.href = "/profile?userId=" + "<%= session.getAttribute("user_id") %>";
     }
 
     function logout() {

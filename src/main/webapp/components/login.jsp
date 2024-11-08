@@ -7,151 +7,68 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<style>
-  button {
-    padding: 1vh;
+<span>
+  <button 
+    id="to-login" 
+    class="normal-btn"
+  >Login</button>
 
-    border: #000 solid 1px;
-    border-radius: 5px;
-    background: none;
-    outline: none;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background: #000;
-    color: #eee;
-  }
-
-  #to-login {
-    margin: 0 5vh;
-  }
-
-  #login-dialog, #register-dialog {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    width: 360px;
-    min-height: 200px;
-    padding: 20px;
-
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  }
-
-  #login-form, #register-form {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: column;
-
-    height: 100%;
-    width: 100%;
-  }
-
-  .inputs>div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin: 10px 0;
-    padding: 0 10px;
-    height: 30px;
-
-    border: 1px solid black;
-    border-radius: 15px;
-    /*box-shadow: -5px -5px 5px rgba(0, 0, 0, 0.3);*/
-
-    label {
-      width: 82px;
-      color: #666;
-    }
-
-    input {
-      border: none;
-      background-color: white!important;
-      outline: none!important;
-
-      font-size: large;
-    }
-  }
-
-  .buttons {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    margin: 10px 0;
-    width: 100%;
-  }
-
-  .exists-border {
-    border: 1px solid red!important;
-  }
-
-  .exists-font {
-    color: red!important;
-  }
-
-  #check-username-span {
-    font-size: small;
-    color: green;
-  }
-</style>
-
-<button id="to-login">Login</button>
-<dialog id="login-dialog">
-  <form id="login-form" action="http://localhost:8080/login" method="post">
-    <span>Login</span>
-    <div class="inputs">
-      <div class="username-div">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" />
+  <dialog id="login-dialog" class="rounded-2xl">
+    <form 
+      id="login-form" 
+      action="http://localhost:8080/login" 
+      method="post"
+      class="normal-dialog"
+    >
+      <span class="p-6 text-lg font-bold">Login</span>
+      <div>
+        <div class="normal-input">
+          <label for="username">Username:</label>
+          <input type="text" name="username" id="username" />
+        </div>
+        <div class="normal-input">
+          <label for="password">Password:</label>
+          <input type="password" name="password" id="password" />
+        </div>
       </div>
-      <div class="password-div">
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" />
+      <div class="flex justify-between items-center w-full">
+        <button type="button" id="cancel" class="normal-btn">Cancel</button>
+        <button type="button" id="to-register" class="normal-btn">No account?</button>
+        <button type="submit" id="login" class="normal-btn">Login</button>
       </div>
-    </div>
-    <div class="buttons">
-      <button type="button" id="cancel">Cancel</button>
-      <button type="button" id="to-register">No account?</button>
-      <button type="submit" id="login">Login</button>
-    </div>
-  </form>
-</dialog>
+    </form>
+  </dialog>
 
-<dialog id="register-dialog">
-  <form id="register-form" action="http://localhost:8080/register" method="post">
-    <span>Register</span>
-    <div class="inputs">
-      <span id="check-username-span"></span>
-      <div class="username-div" id="r-username-div">
-        <label for="r-username">Username:</label>
-        <input type="text" name="username" id="r-username" oninput="checkUsername(this)" />
+  <dialog id="register-dialog" class="rounded-2xl">
+    <form 
+      id="register-form" 
+      action="http://localhost:8080/register" 
+      method="post"
+      class="normal-dialog"
+    >
+      <span class="p-6 text-lg font-bold">Register</span>
+      <div>
+        <span id="check-username-span"></span>
+        <div class="normal-input" id="r-username-div">
+          <label for="r-username">Username:</label>
+          <input type="text" name="username" id="r-username" oninput="checkUsername(this)" />
+        </div>
+        <div class="normal-input">
+          <label for="r-password">Password:</label>
+          <input type="password" name="password" id="r-password" />
+        </div>
+        <div class="normal-input">
+          <label for="email">Email:</label>
+          <input type="email" name="email" id="email" />
+        </div>
       </div>
-      <div class="password-div">
-        <label for="r-password">Password:</label>
-        <input type="password" name="password" id="r-password" />
+      <div class="flex justify-between items-center w-full">
+        <button type="button" id="back" class="normal-btn">Back</button>
+        <button type="submit" id="register" class="normal-btn">Register</button>
       </div>
-<%--        <div class="password-div">--%>
-<%--          <label for="cr-password">Confirm:</label>--%>
-<%--          <input type="password" name="cr-password" id="cr-password" />--%>
-<%--        </div>--%>
-      <div class="email-div">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" />
-      </div>
-    </div>
-    <div class="buttons">
-      <button type="button" id="back">Back</button>
-      <button type="submit" id="register">Register</button>
-    </div>
-  </form>
-</dialog>
+    </form>
+  </dialog>
+</span>
 
 <script>
   const toLoginButton = document.getElementById('to-login');
@@ -191,7 +108,15 @@
     const username = e.value;
 
     if (username.length === 0) {
-      rUsernameDiv.setAttribute('class', 'username-div');
+      registerButton.disabled = true;
+      if (!rUsernameDiv.classList.contains('border-black'))
+        rUsernameDiv.classList.add('border-black');
+      if (rUsernameDiv.classList.contains('border-red-600'))
+        rUsernameDiv.classList.remove('border-red-600');
+      if (rUsernameDiv.classList.contains('text-red-600'))
+        rUsernameInput.classList.remove('text-red-600');
+      if (checkUsernameSpan.classList.contains('text-red-600'))
+        checkUsernameSpan.classList.remove('text-red-600');
       checkUsernameSpan.textContent = '';
       return;
     }
@@ -217,15 +142,17 @@
 
       if (data.exists) {
         registerButton.disabled = true;
-        rUsernameDiv.classList.add('exists-border');
-        rUsernameInput.classList.add('exists-font');
-        checkUsernameSpan.classList.add('exists-font');
+        rUsernameDiv.classList.remove('border-black');
+        rUsernameDiv.classList.add('border-red-600');
+        rUsernameInput.classList.add('text-red-600');
+        checkUsernameSpan.classList.add('text-red-600');
         checkUsernameSpan.textContent = username + ' already exists';
       } else {
         registerButton.disabled = false;
-        rUsernameDiv.classList.remove('exists-border');
-        rUsernameInput.classList.remove('exists-font');
-        checkUsernameSpan.classList.remove('exists-font');
+        rUsernameDiv.classList.add('border-black');
+        rUsernameDiv.classList.remove('border-red-600');
+        rUsernameInput.classList.remove('text-red-600');
+        checkUsernameSpan.classList.remove('text-red-600');
         checkUsernameSpan.textContent = username + ' is available';
       }
     } catch (err) {

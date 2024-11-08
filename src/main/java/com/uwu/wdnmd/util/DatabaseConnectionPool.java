@@ -1,11 +1,25 @@
 package com.uwu.wdnmd.util;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 public class DatabaseConnectionPool {
-//    HikariConfig config = new HikariConfig();
-//    config.setJdbcUrl("jdbc:mysql://localhost:3306/test");
-//    config.setUsername("root");
-//    config.addDataSourceProperty("connectionTimeout", "1000"); // 连接超时：1秒
-//    config.addDataSourceProperty("idleTimeout", "60000"); // 空闲超时：60秒
-//    config.addDataSourceProperty("maximumPoolSize", "10"); // 最大连接数：10
-//    DataSource ds = new HikariDataSource(config);
+    public static HikariDataSource ds;
+
+    public static void setConnection() {
+        try {
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl("jdbc:mysql://localhost:3306/wdnmd");
+            config.setUsername("root");
+            config.setPassword("P@ssw0rd");
+            config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+            config.addDataSourceProperty("cachePrepStmts", "true");
+            config.addDataSourceProperty("prepStmtCacheSize", "250");
+            config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
+            ds = new HikariDataSource(config);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
