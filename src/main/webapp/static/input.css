@@ -28,5 +28,10 @@
       border: none !important;
       outline: none !important;
     }
+
+    textarea {
+      border: none !important;
+      outline: none !important;
+    }
   }
 }

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import com.uwu.wdnmd.model.Blog;
+import com.uwu.wdnmd.dao.FileDao;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,8 +39,7 @@ public class IndexController {
         HttpSession session = req.getSession();
         String username = (String) session.getAttribute("username");
         String password = (String) session.getAttribute("password");
-
-        int userId = Integer.parseInt(req.getParameter("userId"));
+        int userId = (int) session.getAttribute("user_id");
 
         User user = UserDao.getUser(username, password);
         if (user == null) {
@@ -60,48 +60,18 @@ public class IndexController {
         return new ModelAndView("forward:view/index.jsp", model);
     }
 
-    @GetMapping("/blog-content")
-    public ModelAndView blogContent(HttpServletRequest req) {
-        int blogId = Integer.parseInt(req.getParameter("blogId"));
-        Blog blog = BlogDao.getBlog(blogId);
-        if (blog == null) {
-            Map<String, Object> model = new HashMap<>();
-            model.put("error", "Invalid blog id");
-            model.put("main", "Error");
-            return new ModelAndView("forward:view/index.jsp", model);
-        }
-
-        File file = new File(blog.url);
-        BufferedReader reader = null;
-        StringBuilder fileContent = new StringBuilder();
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                fileContent.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            Map<String, Object> model = new HashMap<>();
-            model.put("content", "something went wrong");
-            model.put("main", "Content");
-
-            return new ModelAndView("forward:view/index.jsp", model);
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    @GetMapping("/new")
+    public ModelAndView newBlog(HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        String username = (String) session.getAttribute("username");
+        String password = (String) session.getAttribute("password");
 
         Map<String, Object> model = new HashMap<>();
-        model.put("content", fileContent.toString());
-        model.put("main", "Content");
-
+        if (UserDao.getUser(username, password) != null) {
+            model.put("main", "Add");
+            return new ModelAndView("forward:view/index.jsp", model);
+        }
+        model.put("error", "Invalid username or password");
         return new ModelAndView("forward:view/index.jsp", model);
     }
 }

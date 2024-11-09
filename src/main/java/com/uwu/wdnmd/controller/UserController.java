@@ -8,11 +8,11 @@ import com.uwu.wdnmd.framework.ModelAndView;
 import com.uwu.wdnmd.framework.PostMapping;
 import com.uwu.wdnmd.model.User;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,5 +97,58 @@ public class UserController {
 
     private static class InputData {
         public String username;
+    }
+
+    @GetMapping("/users")
+    public ModelAndView users(HttpServletRequest req) {
+        ArrayList<User> users = UserDao.getUsers();
+        HttpSession session = req.getSession();
+        String username = (String) session.getAttribute("username");
+        String password = (String) session.getAttribute("password");
+        User user = UserDao.getUser(username, password);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("users", users);
+        if (user != null && user.role.equals("admin")) {
+            model.put("main", "Manage");
+            model.put("manageScope", "user");
+        }
+        return new ModelAndView("forward:view/index.jsp", model);
+    }
+
+    @PostMapping("/user-edit")
+    public ModelAndView userEdit(HttpServletRequest req) throws SQLException {
+        HttpSession session = req.getSession();
+        String id = session.getAttribute("user_id").toString();
+
+        User user = new User();
+        user.username = req.getParameter("username");
+        user.password = req.getParameter("password");
+        user.email = req.getParameter("email");
+        user.user_id = Integer.parseInt(id);
+
+        if (UserDao.updateUser(user)) {
+            Map<String, Object> model = new HashMap<>();
+            model.put("username", user.username);
+            model.put("password", user.password);
+            model.put("main", "Blog");
+            return new ModelAndView("redirect:/", model);
+        } else {
+            Map<String, Object> model = new HashMap<>();
+            model.put("error", "Invalid username or password");
+            model.put("main", "Error");
+            return new ModelAndView("forward:view/index.jsp", model);
+        }
+    }
+
+    @GetMapping("/user-delete")
+    public ModelAndView userDelete(HttpServletRequest req) {
+        int id = Integer.parseInt(req.getParameter("userId"));
+        UserDao.deleteUser(id);
+        Map<String, Object> model = new HashMap<>();
+        model.put("users", UserDao.getUsers());
+        model.put("main", "Manage");
+        model.put("manageScope", "user");
+        return new ModelAndView("forward:view/index.jsp", model);
     }
 }

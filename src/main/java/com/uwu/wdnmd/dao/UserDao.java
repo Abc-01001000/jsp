@@ -60,6 +60,36 @@ public class UserDao {
         }
     }
 
+    public static boolean updateUser(User user) throws SQLException {
+        try (Connection conn = ds.getConnection()) {
+            String sql = "UPDATE user SET username =?, password =?, email =? WHERE user_id =?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, user.username);
+                ps.setString(2, user.password);
+                ps.setString(3, user.email);
+                ps.setInt(4, user.user_id);
+                ps.executeUpdate();
+                if (updateBlogAuthor(user.user_id, user.username))
+                    return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    public static boolean updateBlogAuthor(int user_id, String username) throws SQLException {
+        String sql = "UPDATE blog SET author = ? WHERE author_id = ?";
+        try (Connection conn = ds.getConnection()) {
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, username);
+                ps.setInt(2, user_id);
+                ps.executeUpdate();
+                return true;
+            }
+        }
+    }
+
     protected static ArrayList<User> startQuery(String sql, ArrayList<String> args) {
         ArrayList<User> users = new ArrayList<>();
         try (Connection conn = ds.getConnection()) {

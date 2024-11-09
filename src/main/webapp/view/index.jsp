@@ -20,8 +20,10 @@
       <%= currentContent %>
     </span>
 
-    <nav>
-      <%-- TODO menu --%>
+    <nav class="flex justify-between items-center">
+      <% if (currentContent.equals("Blog") && session.getAttribute("username") != null) { %>
+        <button class="normal-btn" id="back-btn" onclick="toAddBlog()">Add</button>
+      <% } %>
     </nav>
 
     <span class="flex items-center">
@@ -66,6 +68,10 @@
     %>
           <jsp:include page="error.jsp"/>
     <%
+        } case "Add" -> {
+    %>
+          <jsp:include page="addBlog.jsp"/>
+    <%
         }
       }
     %>
@@ -78,9 +84,12 @@
       window.history.back();
     }
 
+    function toAddBlog() {
+      window.location.href = '/new';
+    }
+
     function toProfile() {
-      console.log("<%= session.getAttribute("user_id") %>")
-      window.location.href = "/profile?userId=" + "<%= session.getAttribute("user_id") %>";
+      window.location.href = '/profile';
     }
 
     function logout() {
