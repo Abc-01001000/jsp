@@ -1,6 +1,5 @@
 package com.uwu.wdnmd.controller;
 
-import com.google.gson.Gson;
 import com.uwu.wdnmd.dao.BlogDao;
 import com.uwu.wdnmd.dao.FileDao;
 import com.uwu.wdnmd.dao.UserDao;

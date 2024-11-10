@@ -1,6 +1,5 @@
 package com.uwu.wdnmd.dao;
 
-import com.google.gson.Gson;
 import com.uwu.wdnmd.model.Blog;
 
 import java.sql.Connection;
@@ -18,6 +17,7 @@ public class BlogDao {
         String path = "C:\\Users\\abc\\Project\\wdnmd\\public";
         blog.url = path + "\\" + blog.author_id + "_" + blog.title + ".txt";
 
+        content = content.replaceAll("<br>", "\n");
         ArrayList<String> args = new ArrayList<>();
         args.add(String.valueOf(blog.author_id));
         args.add(blog.title);

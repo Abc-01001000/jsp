@@ -7,19 +7,12 @@ import com.uwu.wdnmd.framework.GetMapping;
 import com.uwu.wdnmd.framework.ModelAndView;
 import com.uwu.wdnmd.model.User;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import com.uwu.wdnmd.model.Blog;
-import com.uwu.wdnmd.dao.FileDao;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Controller
 public class IndexController {

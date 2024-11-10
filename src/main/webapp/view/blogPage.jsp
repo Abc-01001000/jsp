@@ -9,11 +9,12 @@
 
 <%
   String content = (String) request.getAttribute("content");
-  content = content.replace("\n", "<br>");
+  String renderContent = content.replace("\n", "<br>");
   Blog blog = (Blog) request.getAttribute("blog");
+  int user_id = (int) session.getAttribute("user_id");
 %>
 <div>
-  <% if (blog.author_id == Integer.parseInt(session.getAttribute("user_id").toString())) { %>
+  <% if (blog.author_id == user_id) { %>
     <button class="px-2 py-1 rounded-lg hover:bg-black hover:text-white" onclick="edit()"> Edit </button>
   <dialog id="edit-blog-dialog" class="rounded-2xl">
     <form
@@ -47,7 +48,7 @@
   <% } %>
   <h1 class="text-2xl font-bold"><%= blog.title %>&nbsp;(by: <%= blog.author %>)</h1>
   <h2 class="text-lg"><%= blog.description %></h2>
-  <p><%= content %></p>
+  <p><%= renderContent %></p>
 </div>
 
 <script>

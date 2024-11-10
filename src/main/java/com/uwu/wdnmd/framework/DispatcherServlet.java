@@ -28,12 +28,12 @@ public class DispatcherServlet extends HttpServlet {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private Map<String, GetDispatcher> getMappings = new HashMap<>();
+	private final Map<String, GetDispatcher> getMappings = new HashMap<>();
 
-	private Map<String, PostDispatcher> postMappings = new HashMap<>();
+	private final Map<String, PostDispatcher> postMappings = new HashMap<>();
 
 	// TODO: 可指定package并自动扫描:
-	private List<Class<?>> controllers = List.of(IndexController.class, UserController.class, BlogController.class);
+	private final List<Class<?>> controllers = List.of(IndexController.class, UserController.class, BlogController.class);
 
 	private ViewEngine viewEngine;
 
