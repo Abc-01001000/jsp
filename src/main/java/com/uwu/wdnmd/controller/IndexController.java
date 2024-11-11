@@ -1,5 +1,6 @@
 package com.uwu.wdnmd.controller;
 
+import com.google.gson.Gson;
 import com.uwu.wdnmd.dao.BlogDao;
 import com.uwu.wdnmd.dao.UserDao;
 import com.uwu.wdnmd.framework.Controller;
@@ -23,6 +24,8 @@ public class IndexController {
         Map<String, Object> model = new HashMap<>();
         model.put("blogs", blogs);
         model.put("main", "Blog");
+
+        System.out.println(new Gson().toJson(blogs));
 
         return new ModelAndView("forward:view/index.jsp", model);
     }
